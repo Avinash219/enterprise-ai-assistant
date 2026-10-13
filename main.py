@@ -7,4 +7,4 @@ app = FastAPI()
 
 @app.get("/health")
 def health() -> HealthResponse:
-    HealthResponse(message="Ok")
+    return HealthResponse(message="Ok")
