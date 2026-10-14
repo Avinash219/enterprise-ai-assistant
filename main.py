@@ -6,11 +6,13 @@ from settings.app_settings import AppSettings
 
 settings = AppSettings()
 
-
 app = FastAPI(
-    title=settings.APP_NAME
+    title=settings.APP_NAME,
+    debug=not settings.is_production
 )
+
 
 @app.get("/health")
 def health() -> HealthResponse:
     return HealthResponse(message="Ok")
+
