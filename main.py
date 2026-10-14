@@ -8,12 +8,14 @@ settings = AppSettings()
 DEBUG_MODE = False
 
 app = FastAPI(
-    title=settings.APP_NAME
+    title=settings.APP_NAME,
+    debug=not settings.is_production
 )
 
-if not settings.is_production:
-    DEBUG_MODE = True
+print(app.debug)
 
 @app.get("/health")
 def health() -> HealthResponse:
     return HealthResponse(message="Ok")
+
+    print(app.debug)

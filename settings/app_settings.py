@@ -13,7 +13,7 @@ class AppSettings(BaseSettings):
     
     @computed_field
     @property
-    def is_production(self) -> str:
+    def is_production(self) -> bool:
         return self.APP_ENV.value == EnvironmentEnum.PRODUCTION
 
     
