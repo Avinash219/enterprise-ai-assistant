@@ -11,10 +11,8 @@ app = FastAPI(
     debug=not settings.is_production
 )
 
-print(app.debug)
 
 @app.get("/health")
 def health() -> HealthResponse:
     return HealthResponse(message="Ok")
 
-    print(app.debug)
