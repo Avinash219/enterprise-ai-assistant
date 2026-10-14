@@ -5,7 +5,6 @@ from models.health_response import HealthResponse
 from settings.app_settings import AppSettings
 
 settings = AppSettings()
-DEBUG_MODE = False
 
 app = FastAPI(
     title=settings.APP_NAME,

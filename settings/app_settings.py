@@ -11,10 +11,9 @@ class AppSettings(BaseSettings):
     APP_NAME: str
     APP_ENV: EnvironmentEnum
     
-    @computed_field
     @property
     def is_production(self) -> bool:
-        return self.APP_ENV.value == EnvironmentEnum.PRODUCTION
+        return self.APP_ENV == EnvironmentEnum.PRODUCTION
 
     
     model_config = SettingsConfigDict(
