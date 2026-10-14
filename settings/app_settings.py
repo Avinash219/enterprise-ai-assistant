@@ -9,11 +9,6 @@ class AppSettings(BaseSettings):
         env_file_encoding= "utf-8",
         extra="ignore"
     )
-    
-try:
-    settings = AppSettings()
-except Exception as e:
-    print(f"Validation Error {e}")
 
     
         
