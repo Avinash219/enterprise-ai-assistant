@@ -2,8 +2,14 @@
 from fastapi import FastAPI
 
 from models.health_response import HealthResponse
+from settings.app_settings import AppSettings
 
-app = FastAPI()
+settings = AppSettings()
+
+
+app = FastAPI(
+    title=settings.APP_NAME
+)
 
 @app.get("/health")
 def health() -> HealthResponse:
