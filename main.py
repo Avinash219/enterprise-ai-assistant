@@ -29,14 +29,19 @@ async def llmCheck(request: LLMRequest):
 
 @app.post("/documents")
 async def uploadDocument(file : UploadFile) -> FileUploadResponse:
-    if Path(file.filename).suffix == ".txt":
+    if Path(file.filename).suffix != ".txt":
         raise HTTPException(status_code=400,detail="Only TextFiles are supported")
     if file.size/(1024*1024) > 5:
         raise HTTPException(status_code=400,detail="File size larger than 5 Mb not supported")
     if file.size == 0:
-            raise HTTPException(status_code=404,detail="Empty File are not supported")
+            raise HTTPException(status_code=400,detail="Empty File are not supported")
         
     content = await file.read()
     
-    return FileUploadResponse(content=content.decode("utf-8","strict"),fileName=file.filename)
+    try:
+        data = content.decode("utf-8","strict")
+        return FileUploadResponse(content=data,fileName=file.filename,characterCount = len(content))
+    except:
+        raise HTTPException(status_code=400,detail=UnicodeDecodeError)
+        
     
