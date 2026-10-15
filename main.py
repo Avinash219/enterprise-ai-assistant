@@ -3,7 +3,7 @@ from fastapi import FastAPI
 
 from helper.llm_initialize import llm_init
 from models.health_response import HealthResponse
-from models.llm_response import LLMResponse
+from models.llm_req_res import LLMRequest, LLMResponse
 from settings.app_settings import AppSettings
 
 settings = AppSettings()
@@ -22,7 +22,7 @@ def health() -> HealthResponse:
 
 
 @app.post("/llm-check")
-async def llmCheck(query: str):
-    result = model.invoke(query)
+async def llmCheck(request: LLMRequest):
+    result = await model.ainvoke(request.query)
     return LLMResponse(result=result.content)
 
