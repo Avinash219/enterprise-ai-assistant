@@ -1,5 +1,7 @@
 
-from fastapi import FastAPI, HTTPException, Path, UploadFile
+from pathlib import Path
+
+from fastapi import FastAPI, HTTPException, UploadFile
 
 from helper.llm_initialize import llm_init
 from models.file_upload_response import FileUploadResponse
@@ -40,8 +42,8 @@ async def uploadDocument(file : UploadFile) -> FileUploadResponse:
     
     try:
         data = content.decode("utf-8","strict")
-        return FileUploadResponse(content=data,fileName=file.filename,characterCount = len(content))
-    except:
-        raise HTTPException(status_code=400,detail=UnicodeDecodeError)
+        return FileUploadResponse(content=data,fileName=file.filename,characterCount = len(data))
+    except UnicodeDecodeError:
+        raise HTTPException(status_code=400,detail="File must contain valid UTF-8 text")
         
     
