@@ -7,7 +7,7 @@ class EnvironmentEnum(str, Enum):
     PRODUCTION= "production"
     
 class LLMProvider(str,Enum):
-    ANTHROPIC = "anthropic"
+    ANTHROPIC = "Anthropic"
     
 class AppSettings(BaseSettings):
     APP_NAME: str
