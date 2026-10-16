@@ -7,7 +7,7 @@ from helper.llm_initialize import llm_init
 from models.file_upload_response import FileUploadResponse
 from models.health_response import HealthResponse
 from models.llm_req_res import LLMRequest, LLMResponse
-from services.document_chunker import doc_chunk_list
+from services.document_chunker import embed_doc
 from settings.app_settings import AppSettings
 
 settings = AppSettings()
@@ -43,8 +43,9 @@ async def uploadDocument(file : UploadFile) -> FileUploadResponse:
     
     try:
         data = content.decode("utf-8","strict")
-        chunkData = doc_chunk_list(data,settings.CHUNK_SIZE,settings.CHUNK_OVERLAP_SIZE)
-        return FileUploadResponse(content=data,fileName=file.filename,characterCount = len(data),chunkData = chunkData)
+        embedData = embed_doc(data,settings.CHUNK_SIZE,settings.CHUNK_OVERLAP_SIZE)
+        print(embedData)
+        return FileUploadResponse(content=data,fileName=file.filename,characterCount = len(data),embedData = embedData)
     except UnicodeDecodeError:
         raise HTTPException(status_code=400,detail="File must contain valid UTF-8 text")
         
