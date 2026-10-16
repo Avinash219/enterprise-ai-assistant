@@ -15,6 +15,8 @@ class AppSettings(BaseSettings):
     LLM_MODEL_NAME: str
     LLM_PROVIDER: LLMProvider
     LLM_API_KEY: str
+    CHUNK_SIZE: int
+    CHUNK_OVERLAP_SIZE: int
     
     @property
     def is_production(self) -> bool:
