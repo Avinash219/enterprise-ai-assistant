@@ -26,7 +26,7 @@ class AppSettings(BaseSettings):
     @model_validator(mode='after')
     def compareOverlapSize(self):
         if self.CHUNK_OVERLAP_SIZE >= self.CHUNK_SIZE:
-            raise ValueError('Chunk Overlap Size cannot be greater than ChunK Size')
+            raise ValueError('Chunk Overlap Size must be less than ChunK Size')
         return self
     
     model_config = SettingsConfigDict(
