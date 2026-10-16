@@ -17,15 +17,15 @@ class AppSettings(BaseSettings):
     LLM_PROVIDER: LLMProvider
     LLM_API_KEY: str
     CHUNK_SIZE: PositiveInt
-    CHUNK_OVERLAP_SIZE: int = Field(gt=0)
+    CHUNK_OVERLAP_SIZE: int = Field(ge=0)
     
     @property
     def is_production(self) -> bool:
         return self.APP_ENV == EnvironmentEnum.PRODUCTION
 
-    @model_validator(mode='before')
+    @model_validator(mode='after')
     def compareOverlapSize(self):
-        if self.CHUNK_OVERLAP_SIZE > self.CHUNK_SIZE:
+        if self.CHUNK_OVERLAP_SIZE >= self.CHUNK_SIZE:
             raise ValueError('Chunk Overlap Size cannot be greater than ChunK Size')
         return self
     
