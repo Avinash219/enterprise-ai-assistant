@@ -22,7 +22,7 @@ def create_doc_vector(filename: str,text: str,chunkSize: int,chunkOverlapSize: i
 
 def get_stored_documents():
     vector_store = Chroma(
-        collection_name="knowledge_document",
+        collection_name="knowledge_documents",
         embedding_function=embeddings,
         persist_directory=persist_directory
     )
