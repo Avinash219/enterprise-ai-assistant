@@ -45,7 +45,6 @@ async def uploadDocument(file : UploadFile) -> FileUploadResponse:
     try:
         data = content.decode("utf-8","strict")
         embedData = create_doc_vector(file.filename,data,settings.CHUNK_SIZE,settings.CHUNK_OVERLAP_SIZE)
-        print(embedData.get(limit=5))
         return FileUploadResponse(content=data,fileName=file.filename,characterCount = len(data))
     except UnicodeDecodeError:
         raise HTTPException(status_code=400,detail="File must contain valid UTF-8 text")

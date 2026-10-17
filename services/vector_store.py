@@ -7,10 +7,24 @@ persist_directory = "./my_chroma_db"
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 def create_doc_vector(filename: str,text: str,chunkSize: int,chunkOverlapSize: int):
+    chunks = doc_chunk_list(text,chunkSize,chunkOverlapSize)
+    
+    for chunk in chunks:
+        chunk.metadata['source'] = filename
+    
     return Chroma.from_documents(
-        documents= doc_chunk_list(text,chunkSize,chunkOverlapSize),
+        documents= chunks,
         embedding= embeddings,
         persist_directory=persist_directory,
-        collection_name=filename
+        collection_name="knowledge_document"
     )
     
+
+def get_stored_documents():
+    vector_store = Chroma(
+        collection_name="knowledge_document",
+        embedding_function=embeddings,
+        persist_directory=persist_directory
+    )
+
+    return vector_store.get(limit=5)
