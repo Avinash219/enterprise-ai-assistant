@@ -28,3 +28,12 @@ def get_stored_documents():
     )
 
     return vector_store.get(limit=5)
+
+def search_documents(question: str):
+     vector_store = Chroma(
+            collection_name="knowledge_documents",
+            embedding_function=embeddings,
+            persist_directory=persist_directory
+        )
+     vector_store.similarity_search(question,k=3)
+    
