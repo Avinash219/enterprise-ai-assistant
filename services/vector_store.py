@@ -16,7 +16,7 @@ def create_doc_vector(filename: str,text: str,chunkSize: int,chunkOverlapSize: i
         documents= chunks,
         embedding= embeddings,
         persist_directory=persist_directory,
-        collection_name="knowledge_document"
+        collection_name="knowledge_documents"
     )
     
 
