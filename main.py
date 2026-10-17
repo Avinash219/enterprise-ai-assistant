@@ -1,13 +1,14 @@
 
 from pathlib import Path
 
+import chromadb
 from fastapi import FastAPI, HTTPException, UploadFile
 
 from helper.llm_initialize import llm_init
 from models.file_upload_response import FileUploadResponse
 from models.health_response import HealthResponse
 from models.llm_req_res import LLMRequest, LLMResponse
-from services.document_chunker import embed_doc
+from services.vector_store import create_doc_vector
 from settings.app_settings import AppSettings
 
 settings = AppSettings()
@@ -43,8 +44,9 @@ async def uploadDocument(file : UploadFile) -> FileUploadResponse:
     
     try:
         data = content.decode("utf-8","strict")
-        embedData = embed_doc(data,settings.CHUNK_SIZE,settings.CHUNK_OVERLAP_SIZE)
-        return FileUploadResponse(content=data,fileName=file.filename,characterCount = len(data),embedData = embedData[-1:])
+        embedData = create_doc_vector(file.filename,data,settings.CHUNK_SIZE,settings.CHUNK_OVERLAP_SIZE)
+        print(embedData.get(limit=5))
+        return FileUploadResponse(content=data,fileName=file.filename,characterCount = len(data))
     except UnicodeDecodeError:
         raise HTTPException(status_code=400,detail="File must contain valid UTF-8 text")
         
