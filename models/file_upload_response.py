@@ -7,4 +7,3 @@ class FileUploadResponse(BaseModel):
     fileName: str
     content: str
     characterCount: int
-    embedData: List[List[float]]
