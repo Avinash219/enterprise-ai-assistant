@@ -4,9 +4,11 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException, UploadFile
 
 from helper.llm_initialize import llm_init
+from models.answer_req_res import AnswerRequest, AnswerResponse
 from models.file_upload_response import FileUploadResponse
 from models.health_response import HealthResponse
 from models.llm_req_res import LLMRequest, LLMResponse
+from services.answer_generator import answer_question
 from services.vector_store import create_doc_vector
 from settings.app_settings import AppSettings
 
@@ -47,5 +49,10 @@ async def uploadDocument(file : UploadFile) -> FileUploadResponse:
         return FileUploadResponse(content=data,fileName=file.filename,characterCount = len(data))
     except UnicodeDecodeError:
         raise HTTPException(status_code=400,detail="File must contain valid UTF-8 text")
+
+@app.post("/ask",response_model=AnswerResponse)
+async def ask(question:AnswerRequest):
+    result = await answer_question(model,question.question)
+    return AnswerResponse(answer=result["res"].text,sources = result["citation"])
         
     
