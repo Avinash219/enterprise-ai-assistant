@@ -35,5 +35,5 @@ def search_documents(question: str):
             embedding_function=embeddings,
             persist_directory=persist_directory
         )
-     return vector_store.similarity_search(question,k=3)
+     return vector_store.similarity_search_with_score(question,k=3)
     

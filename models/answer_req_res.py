@@ -7,5 +7,5 @@ class AnswerRequest(BaseModel):
     question: str
     
 class AnswerResponse(BaseModel):
-    answer: str
+    answer: str | None
     sources: List[str]

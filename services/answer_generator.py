@@ -12,12 +12,22 @@ def llm_init(api_key: str,model_name: str):
 
 async def answer_question(model: ChatAnthropic,question: str):
     result = search_documents(question)
-    print("Result" , result)
+    if len(result) == 0:
+            return {
+                "res" : "I couldn't find relevant information in the uploaded documents.",
+                "citation" : []
+            }
+    score = result[0][-1]
+    if score >= 1:
+        return {
+            "res" : "I couldn't find relevant information in the uploaded documents.",
+            "citation" : []
+        }
     response = []
     citation = []
-    for content in result:
-        response.append(content.page_content)
-        citation.append(content.metadata['source'])
+    for document,score in result:
+        response.append(document.page_content)
+        citation.append(document.metadata['source'])
         
     
     prompt = ChatPromptTemplate.from_messages([
@@ -44,6 +54,7 @@ async def answer_question(model: ChatAnthropic,question: str):
         "context" : "\n".join(response),
         "question" : question
     })
+    
     return {
         "res" : res,
         "citation" : list(dict.fromkeys(citation))
