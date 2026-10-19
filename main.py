@@ -53,6 +53,9 @@ async def uploadDocument(file : UploadFile) -> FileUploadResponse:
 @app.post("/ask",response_model=AnswerResponse)
 async def ask(question:AnswerRequest):
     result = await answer_question(model,question.question)
+    print(result["res"])
+    if isinstance(result["res"], str):
+        return AnswerResponse(answer=result["res"],sources = result["citation"])
     return AnswerResponse(answer=result["res"].text,sources = result["citation"])
         
     
